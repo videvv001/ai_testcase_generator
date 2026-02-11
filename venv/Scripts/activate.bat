@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\virge\OneDrive\Desktop\project\Ai tool\ai_testcase_generator\venv"
+set "VIRTUAL_ENV=F:\project\tool\ai_testcase_generator\venv"
 
 if not defined PROMPT set PROMPT=$P$G
 

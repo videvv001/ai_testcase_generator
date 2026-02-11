@@ -33,32 +33,88 @@ ai_testcase_generator/
 └── DOCUMENTATION.md        # Full production documentation
 ```
 
-## Installation
+## First-time setup
+
+Run these steps once after cloning or moving the project. All commands are from the **project root** (e.g. `F:\project\tool\ai_testcase_generator` or `ai_testcase_generator/`).
+
+### 1. Python virtual environment and backend dependencies
+
+Create a virtual environment and install backend dependencies so the API runs in an isolated environment (avoids path issues when moving the project).
+
+**Windows (PowerShell):**
+
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r backend\requirements.txt
+```
+
+**macOS / Linux (bash):**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r backend/requirements.txt
+```
+
+### 2. Node dependencies
+
+Install root and frontend dependencies (concurrently is used by `npm run dev`):
+
+```bash
+npm install
+npm install --prefix frontend
+```
+
+### 3. Environment (optional)
+
+- **Backend:** Copy `.env.example` to `.env` in the project root and set API keys if you use OpenAI, Gemini, or Groq. The backend loads `.env` from the project root.
+- **Frontend:** Only needed if you run the frontend against a different API URL; see [Frontend](#frontend) below.
+
+### 4. Run the app
+
+```bash
+npm run dev
+```
+
+This starts the backend at `http://localhost:8000` and the frontend at `http://localhost:5173`. Open `http://localhost:5173` in your browser.
+
+The root `package.json` dev script uses the project’s `venv` for the backend on Windows, so you don’t need to activate the venv before `npm run dev`. On macOS/Linux, activate the venv first, then run `npm run dev`.
+
+---
+
+## Installation (reference)
 
 ### Backend
 
-From the project root, install Python dependencies in the backend:
+Use the project’s virtual environment. From the project root:
+
+**Windows:**
+
+```powershell
+.\venv\Scripts\Activate.ps1
+pip install -r backend\requirements.txt
+```
+
+**macOS / Linux:**
 
 ```bash
-cd backend
-pip install -r requirements.txt
+source venv/bin/activate
+pip install -r backend/requirements.txt
 ```
+
+To run the backend only with the venv: from project root, `cd backend` then run `..\venv\Scripts\python.exe -m uvicorn app.main:app --reload` (Windows) or `../venv/bin/python -m uvicorn app.main:app --reload` (macOS/Linux).
 
 ### Frontend
 
 Requires **Node.js 18+**. From the project root:
 
 ```bash
-cd frontend
 npm install
+npm install --prefix frontend
 ```
 
-Or, for the full setup (root + frontend):
-
-```bash
-npm install
-cd frontend && npm install
-```
+Or from the frontend folder: `cd frontend && npm install`.
 
 **Environment (optional)** — Create `frontend/.env` if you need to override the API base URL (e.g. when running frontend separately or in production):
 
@@ -103,20 +159,16 @@ Open `http://localhost:5173` in your browser.
 
 ### Run backend only
 
-From the project root:
+With the project venv activated, from the project root:
 
 ```bash
 cd backend && uvicorn app.main:app --reload
 ```
 
-Or from inside `backend/`:
+Or without activating venv (Windows): `cd backend && ..\venv\Scripts\python.exe -m uvicorn app.main:app --reload`.  
+macOS/Linux: `cd backend && ../venv/bin/python -m uvicorn app.main:app --reload`.
 
-```bash
-cd backend
-uvicorn app.main:app --reload
-```
-
-Alternatively: `cd backend && python main.py` (no reload).
+Alternatively: `cd backend && python main.py` (no reload; use the venv’s Python if not activated).
 
 API at `http://localhost:8000`. OpenAPI docs at `http://localhost:8000/docs`.
 
@@ -130,7 +182,7 @@ Ensure the backend is already running at `http://localhost:8000`, or set `VITE_A
 
 ### Run backend tests
 
-From the project root:
+With the venv activated, from the project root:
 
 ```bash
 cd backend && python -m pytest tests/ -v

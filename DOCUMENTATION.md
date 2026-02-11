@@ -192,8 +192,9 @@ ai_testcase_generator/
 │   │   └── index.css        # Tailwind imports
 │   ├── vite.config.ts       # Proxy /api → backend
 │   └── package.json
+├── venv/                    # Python virtual environment (create via python -m venv venv)
 ├── .env                     # Backend env vars (at root; backend loads via path)
-├── package.json             # Root: concurrently (backend + frontend)
+├── package.json             # Root: npm run dev (concurrently: backend via venv + frontend)
 └── DOCUMENTATION.md
 ```
 
@@ -222,16 +223,38 @@ ai_testcase_generator/
 - (Optional) Gemini API key for Gemini 2.5 Flash
 - (Optional) Groq API key for Llama 3.3 70B (Groq)
 
-### Installation
+### First-time setup (from project root)
+
+Use a **virtual environment** for the backend so the project is portable (e.g. after moving or cloning). All commands below are from the project root.
+
+**1. Python virtual environment and backend dependencies**
+
+Windows (PowerShell):
+
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r backend\requirements.txt
+```
+
+macOS / Linux:
 
 ```bash
-# Backend (from project root)
-cd backend
-pip install -r requirements.txt
-
-# Frontend (from project root)
-cd frontend && npm install
+python3 -m venv venv
+source venv/bin/activate
+pip install -r backend/requirements.txt
 ```
+
+**2. Node dependencies**
+
+```bash
+npm install
+npm install --prefix frontend
+```
+
+**3. Environment (optional)** — Copy `.env.example` to `.env` in the project root and set API keys (OpenAI, Gemini, Groq) as needed.
+
+See **README.md** for the full first-time setup and run instructions.
 
 ### Environment Variables
 
@@ -258,13 +281,17 @@ Use `.env` in the project root for backend variables (the backend loads it from 
 ```bash
 # Backend + frontend (recommended, from project root)
 npm run dev
-# Starts: backend via "cd backend && uvicorn app.main:app --reload", frontend via "npm run dev --prefix frontend"
+# Starts backend (using project venv on Windows) and frontend. No need to activate venv on Windows.
+# On macOS/Linux: activate venv first (source venv/bin/activate), then npm run dev.
+# Backend: http://localhost:8000  |  Frontend: http://localhost:5173
 
-# Or run backend only (from project root):
+# Run backend only (with venv activated, from project root):
 cd backend && uvicorn app.main:app --reload
+# Without activating venv: cd backend && ..\venv\Scripts\python.exe -m uvicorn app.main:app --reload (Windows)
+#                         cd backend && ../venv/bin/python -m uvicorn app.main:app --reload (macOS/Linux)
 # API at http://localhost:8000. OpenAPI docs at http://localhost:8000/docs
 
-# Or run frontend only (ensure backend is running first):
+# Run frontend only (ensure backend is running first):
 cd frontend && npm run dev
 ```
 
@@ -379,12 +406,13 @@ OpenAPI spec: `http://localhost:8000/docs`
 
 ### Test Execution
 
-From the project root, run tests from the backend directory:
+With the project venv activated, from the project root:
 
 ```bash
-cd backend
-python -m pytest tests/ -v
+cd backend && python -m pytest tests/ -v
 ```
+
+If the venv is not activated, use the venv’s Python: `cd backend && ..\venv\Scripts\python.exe -m pytest tests/ -v` (Windows) or `../venv/bin/python -m pytest tests/ -v` (macOS/Linux).
 
 ### Gaps and Recommendations
 
