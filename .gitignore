@@ -114,3 +114,6 @@ temp/
 node_modules/
 vendor/
 packages/
+
+# But allow frontend lib
+!frontend/src/lib/
