@@ -193,7 +193,14 @@ export async function exportAllToExcelTemplate(
 
   const blob = await res.blob();
   const disposition = res.headers.get("Content-Disposition");
-  let filename = "All_Features_Test_Cases.xlsx";
+  // Fallback filename if backend does not provide one; include local date + time (HHmm)
+  // for uniqueness, e.g. All_Features_Test_Cases_2025-01-10_1432.xlsx.
+  const now = new Date();
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  const fallbackTimestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
+    now.getDate()
+  )}_${pad(now.getHours())}${pad(now.getMinutes())}`;
+  let filename = `All_Features_Test_Cases_${fallbackTimestamp}.xlsx`;
   if (disposition) {
     const match = /filename[*]?=(?:UTF-8'')?["']?([^"'\s;]+)["']?/.exec(disposition);
     if (match?.[1]) filename = match[1].trim();

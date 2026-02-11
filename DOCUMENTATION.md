@@ -328,7 +328,7 @@ curl -X POST http://localhost:8000/api/testcases/generate-test-cases \
 - **Per-feature CSV**: Uses backend-generated filename (`tc_{feature}_{timestamp}.csv`).
 - **Export All (CSV)**: `GET /api/testcases/batches/{batch_id}/export-all` returns merged, deduplicated CSV.
 - **Export to Excel Template (single feature)**: Click “Export to Excel Template” on a feature → upload .xlsx (or use stored template) → optional “Remember this template” → Export. Backend merges that feature’s test cases into the template’s “Test Cases” sheet; **Summary** sheet is unchanged.
-- **Export All to Excel Template**: Click “Export All to Excel Template” (top right) → same template upload → Export. All features’ test cases are combined in order into the single “Test Cases” sheet (e.g. Feature1’s 5 cases, then Feature2’s 3 cases = 8 rows). Column A = sequential No. (1–8); Column B = Test ID per feature (e.g. `TC_FEAT1_001`, `TC_FEAT2_001`).
+- **Export All to Excel Template**: Click “Export All to Excel Template” (top right) → same template upload → Export. All features’ test cases are combined in order into the single “Test Cases” sheet (e.g. Feature1’s 5 cases, then Feature2’s 3 cases = 8 rows). Column A = sequential No. (1–8); Column B = Test ID per feature (e.g. `TC_FEAT1_001`, `TC_FEAT2_001`). The backend returns a timestamped filename including UTC date and time (e.g. `All_Features_Test_Cases_2026-02-11_1432.xlsx`); the frontend mirrors this pattern if the header is missing.
 
 ### Excel Template Structure
 

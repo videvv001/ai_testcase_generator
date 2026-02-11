@@ -29,11 +29,13 @@ Coverage dimension: {layer}
 Focus: {layer_focus}
 {min_hint}
 Rules:
+- List scenarios in a LOGICAL SEQUENCE: start with basic/happy path, then variations, then edge cases, then error scenarios.
 - Do NOT merge scenarios. Each independent validation or flow must be its own scenario.
 - Be exhaustive. List every distinct scenario you can identify for this dimension.
 - Each scenario should be one short phrase (e.g. "User login with valid credentials", "Reject empty required field").
 - Do not write test cases yet; only scenario titles or one-line descriptions.
-- Core scenarios (happy path, required validations) are highest priority and must never be skipped.
+- Core scenarios (happy path, required validations) are highest priority and must be listed first.
+- Order scenarios so that simpler ones come before complex ones that build upon them.
 {existing_block}
 {expansion_block}
 
@@ -79,11 +81,13 @@ Scenarios to expand (each must become at least one test case):
 {existing_block}
 
 Rules:
+- Generate test cases in the SAME SEQUENTIAL ORDER as the scenarios provided above.
 - Minimum one test case per scenario. Create additional test cases when variations (e.g. different inputs, boundaries) are needed.
 - Never summarize multiple distinct failures or validations into one test case.
 - Quality is more important than brevity. Each test case must be concrete and executable.
 - test_steps must be ordered and numbered (e.g. "1. Do X", "2. Do Y").
 - pre_condition, test_data, expected_result must be non-empty strings.
+- Each test case should logically build upon or assume the success of previous basic scenarios.
 
 Use this exact JSON structure (top-level key must be "test_cases"):
 {{
@@ -135,6 +139,7 @@ Existing test cases:
 {existing_test_cases_json}
 
 Expand the existing test suite to increase coverage. Do not replace existing tests. Only add new ones.
+Build upon the existing test cases logically and sequentially.
 """
     target_count_line = ""
     if target_count is not None and target_count > 0:
@@ -157,11 +162,25 @@ Follow these rules strictly:
 - Do not add extra top-level fields beyond what is in the example.
 - Do not include trailing commas anywhere in the JSON.
 - Ensure all strings use double quotes.
+- Generate test cases in LOGICAL SEQUENTIAL ORDER for the coverage focus area:
+  * For "search" functionality: start with basic search → filters/parameters → sorting → pagination → edge cases → error handling
+  * For any functionality: basic happy path → common variations → advanced features → boundary conditions → error scenarios
+- Each test case should logically flow from simpler prerequisites to more complex scenarios.
+- Test cases should build upon each other where appropriate (e.g., filtered search assumes basic search works).
 - Every test case must be realistic, concise, and directly related to the described feature.
 - The test_steps list must be ordered and each step must begin with a step number prefix (e.g. "1. Do X", "2. Do Y", "3. Do Z").
 - Avoid repeating identical step sequences across different test cases when possible; each test case should focus on its unique validation objective.
 - Do not repeat setup or environmental conditions from pre_condition inside test_steps; steps must focus on the core actions and validations of the scenario.
 - Use concrete test data values instead of generic placeholders.
+
+SEQUENTIAL ORDERING EXAMPLE for search functionality:
+1. Basic search returns results
+2. Search with single filter applied
+3. Search with multiple filters combined
+4. Search with sorting applied
+5. Paginate through search results
+6. Search with no results found
+7. Search with invalid parameters
 
 Use the following JSON structure exactly, with a single top-level object containing a test_cases array:
 

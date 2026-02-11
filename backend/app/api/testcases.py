@@ -435,8 +435,10 @@ async def export_all_to_excel(
             detail="At least one feature with test cases is required",
         )
 
-    date_str = datetime.utcnow().strftime("%Y-%m-%d")
-    out_filename = f"All_Features_Test_Cases_{date_str}.xlsx"
+    # Include UTC date and time (hour + minute) in the output filename for uniqueness.
+    # Example: All_Features_Test_Cases_2025-01-10_1432.xlsx
+    timestamp = datetime.utcnow().strftime("%Y-%m-%d_%H%M")
+    out_filename = f"All_Features_Test_Cases_{timestamp}.xlsx"
 
     tmp_dir = Path(tempfile.gettempdir())
     template_path = tmp_dir / f"template_all_{id(template)}_{template.filename or 'template.xlsx'}"

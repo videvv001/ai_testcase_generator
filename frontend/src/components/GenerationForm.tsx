@@ -220,7 +220,7 @@ export function GenerationForm({ isGenerating, onSubmit }: GenerationFormProps) 
                   rows={3}
                   required
                   disabled={isGenerating}
-                  className="resize-none"
+                  className="resize-y overflow-auto max-h-[400px]"
                 />
               </div>
               <div className="space-y-1.5">

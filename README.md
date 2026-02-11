@@ -155,7 +155,7 @@ Open `http://localhost:5173` in your browser.
 - **Export CSV** — Per-feature CSV download.
 - **Export All Features** — Merged CSV of all features (deduplicated).
 - **Export to Excel Template** — Per-feature: upload an `.xlsx` template; test cases are merged into the template’s “Test Cases” sheet (Summary sheet unchanged). Optional “Remember this template” stores it in the browser for next time.
-- **Export All to Excel Template** — Same template upload; all features’ test cases are combined into the single “Test Cases” sheet (Feature1’s cases first, then Feature2’s, etc.). Column A = sequential No. (1, 2, …); Column B = Test ID per feature (e.g. `TC_FEAT1_001`, `TC_FEAT2_001`).
+- **Export All to Excel Template** — Same template upload; all features’ test cases are combined into the single “Test Cases” sheet (Feature1’s cases first, then Feature2’s, etc.). Column A = sequential No. (1, 2, …); Column B = Test ID per feature (e.g. `TC_FEAT1_001`, `TC_FEAT2_001`). The downloaded filename includes the UTC date and time (e.g. `All_Features_Test_Cases_2026-02-11_1432.xlsx`) for easier versioning.
 
 ### Run backend only
 
